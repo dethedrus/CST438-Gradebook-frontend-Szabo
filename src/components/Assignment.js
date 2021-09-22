@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
 import {DataGrid} from '@material-ui/data-grid';
 import {SERVER_URL} from '../constants.js'
+import NewAssignment from './NewAssignment';
 
 // NOTE:  for OAuth security, http request must have
 //   credentials: 'include' 
@@ -80,6 +81,10 @@ class Assignment extends Component {
                 <Button component={Link} to={{pathname:'/gradebook' , assignment: this.state.rows[this.state.selected]}} 
                         variant="outlined" color="primary" disabled={this.state.rows.length==0}  style={{margin: 10}}>
                   Grade
+                </Button>
+				<Button component={Link} to={{pathname:'/NsteaewAssignment' , assignment: this.state.rows[this.state.selected]}} 
+                        variant="outlined" color="primary" disabled={this.state.rows.length==0}  style={{margin: 10}}>
+                  New Assignment
                 </Button>
           </div>
       )
