@@ -22,11 +22,41 @@ class Gradebook extends Component {
       console.log("Gradebook.cnstr "+ JSON.stringify(props.location.assignment));
       this.state = { rows :  [] };
     } 
-    
-     componentDidMount() {
+
+	newAssignment = (name, due_date, course_id) => {
+		const token = Cookies.get('XSRF-TOKEN');
+
+		fetch(`${SERVER_URL}/${course_id}?date=${due_date}&name=${name}`,
+		{ 
+			method: 'POST', 
+			headers: { 'Content-Type': 'application/json',
+					   'X-XSRF-TOKEN': token  }, 
+			body: JSON.stringify(name, due_date, course_id)
+		})
+		.then(res => {
+			if (res.ok) {
+				toast.success("Assignment successfully added", {
+				position: toast.POSITION.BOTTOM_LEFT
+			});
+			// this.addStudent(student_name, email);
+			} else {
+				toast.error("Failed to add assignment", {
+				position: toast.POSITION.BOTTOM_LEFT
+				});
+			console.error('Post http status =' + res.status);
+		}})
+		.catch(err => {
+			toast.error("Failed to add assignment", {
+				position: toast.POSITION.BOTTOM_LEFT
+				});
+			console.error(err);
+		})
+	}
+
+    componentDidMount() {
       this.fetchGrades();
     }
- 
+
     fetchGrades = () => {
       console.log("Gradebook.fetchGrades");
       const token = Cookies.get('XSRF-TOKEN');
@@ -60,7 +90,7 @@ class Gradebook extends Component {
   
    // when submit button pressed, send updated grades to back end 
    //  and then fetch the new grades.
-   handleSubmit = ( ) => {
+   handleSubmit = (name, due_date, course_id) => {
       console.log("Gradebook.handleSubmit");
       const token = Cookies.get('XSRF-TOKEN');
       
